@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/c0c0c0"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/golden_dark"
+        android:orientation="horizontal">
+
+        <View
+            android:layout_width="2dp"
+            android:layout_height="24dp"
+            android:background="@color/xpgroove" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="24dp"
+            android:layout_weight="1"
+            android:gravity="center_vertical"
+            android:paddingStart="8dp"
+            android:text="Reading History"
+            android:textColor="@color/white"
+            android:textSize="12sp" />
+
+        <View
+            android:layout_width="2dp"
+            android:layout_height="24dp"
+            android:background="@color/xpgroove" />
+
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/white" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/xpgroove" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/history_recycler_view"
+        android:layout_width="match_parent"
+        android:layout_height="511dp"
+        android:layout_weight="1"
+        android:background="@color/white"
+        android:padding="4dp" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/white" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/xpgroove" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="20dp"
+        android:background="@color/c0c0c0"
+        android:gravity="center_vertical"
+        android:paddingStart="4dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Made by Youssef Khalfaoui"
+            android:textColor="@color/black"
+            android:textSize="10sp" />
+
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:background="@color/xpgroove" />
+
+</LinearLayout>

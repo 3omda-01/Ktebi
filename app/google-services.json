@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "236135433154",
+    "project_id": "ktebi-43fb8",
+    "storage_bucket": "ktebi-43fb8.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:236135433154:android:d54bb4277f6d436b4f8c5b",
+        "android_client_info": {
+          "package_name": "com.example.kteb"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "236135433154-k5k8soijf48iajhhlrmm6n8vggihqvbu.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDEcSPD-RAQry33VhTem94ADHaXaqTKB2c"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "236135433154-k5k8soijf48iajhhlrmm6n8vggihqvbu.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
