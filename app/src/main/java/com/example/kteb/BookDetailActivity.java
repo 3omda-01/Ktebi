@@ -126,18 +126,23 @@ public class BookDetailActivity extends AppCompatActivity implements DatabaseHel
             return;
         }
         
-        if (ratingBar != null) currentBook.setRating((int) ratingBar.getRating());
-        if (noteInput != null) currentBook.setNote(noteInput.getText().toString());
+        int newRating = ratingBar != null ? (int) ratingBar.getRating() : 0;
+        String newNote = noteInput != null ? noteInput.getText().toString() : "";
+        
+        Log.d("BookDetail", "Saving - rating: " + newRating + ", note: " + newNote);
+        
+        currentBook.setRating(newRating);
+        currentBook.setNote(newNote);
         
         dbHelper.updateBook(currentBook, new DatabaseHelper.OnOperationCompleteListener() {
             @Override
             public void onSuccess() {
-                Toast.makeText(BookDetailActivity.this, "Saved!", Toast.LENGTH_SHORT).show();
+                runOnUiThread(() -> Toast.makeText(BookDetailActivity.this, "Saved!", Toast.LENGTH_SHORT).show());
             }
             
             @Override
             public void onFailure(Exception e) {
-                Toast.makeText(BookDetailActivity.this, "Error: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                runOnUiThread(() -> Toast.makeText(BookDetailActivity.this, "Error: " + e.getMessage(), Toast.LENGTH_SHORT).show());
             }
         });
     }
