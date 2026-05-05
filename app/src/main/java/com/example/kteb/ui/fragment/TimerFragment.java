@@ -10,6 +10,7 @@ import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 import androidx.annotation.NonNull;
@@ -17,11 +18,13 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.core.app.NotificationCompat;
 import androidx.fragment.app.Fragment;
+import com.bumptech.glide.Glide;
 import com.example.kteb.MainActivity;
 import com.example.kteb.R;
 import com.example.kteb.model.Book;
 import com.example.kteb.model.DatabaseHelper;
 import com.example.kteb.model.ReadingSession;
+import com.example.kteb.util.ThemeManager;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,6 +35,8 @@ public class TimerFragment extends Fragment {
     private TextView stopButton;
     private TextView currentBookTitle;
     private TextView selectBookButton;
+    private ImageView timerGif;
+    private View rootLayout, headerBar;
     private boolean timerRunning = false;
     private long startTime = 0;
     private Handler handler = new Handler();
@@ -70,7 +75,16 @@ public class TimerFragment extends Fragment {
         stopButton = view.findViewById(R.id.btn_stop_timer);
         currentBookTitle = view.findViewById(R.id.current_book_title);
         selectBookButton = view.findViewById(R.id.btn_select_book);
-        
+        timerGif = view.findViewById(R.id.timer_gif);
+        rootLayout = view.findViewById(R.id.root_layout);
+        headerBar = view.findViewById(R.id.header_bar);
+        applyTheme();
+
+        Glide.with(this)
+                .asGif()
+                .load("file:///android_asset/time.gif")
+                .into(timerGif);
+
         loadBooks();
         
         if (selectBookButton != null) {
@@ -261,8 +275,19 @@ public class TimerFragment extends Fragment {
     }
     
     @Override
+    public void onResume() {
+        super.onResume();
+        applyTheme();
+    }
+
+    @Override
     public void onDestroyView() {
         super.onDestroyView();
         handler.removeCallbacks(timerRunnable);
+    }
+
+    private void applyTheme() {
+        if (rootLayout != null) rootLayout.setBackgroundColor(ThemeManager.getBgColor(requireContext()));
+        if (headerBar != null) headerBar.setBackgroundColor(ThemeManager.getHeaderColor(requireContext()));
     }
 }

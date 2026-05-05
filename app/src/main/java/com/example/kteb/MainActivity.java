@@ -13,9 +13,11 @@ import com.example.kteb.ui.fragment.BookshelfFragment;
 import com.example.kteb.ui.fragment.TimerFragment;
 import com.example.kteb.ui.fragment.HistoryFragment;
 import com.example.kteb.ui.fragment.ProfileFragment;
+import com.example.kteb.util.ThemeManager;
 
 public class MainActivity extends AppCompatActivity {
     private FirebaseAuth mAuth;
+    private View rootLayout, headerBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,7 +35,11 @@ public class MainActivity extends AppCompatActivity {
         DatabaseHelper.getInstance().setUserIdFromAuth();
         
         setContentView(R.layout.activity_main);
-        
+
+        rootLayout = findViewById(R.id.root_layout);
+        headerBar = findViewById(R.id.header_bar);
+        applyTheme();
+
         TextView navLibrary = findViewById(R.id.nav_bookshelf);
         TextView navTimer = findViewById(R.id.nav_timer);
         TextView navHistory = findViewById(R.id.nav_history);
@@ -80,5 +86,16 @@ public class MainActivity extends AppCompatActivity {
                     .replace(R.id.fragment_container, new BookshelfFragment())
                     .commit();
         }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        applyTheme();
+    }
+
+    private void applyTheme() {
+        if (rootLayout != null) rootLayout.setBackgroundColor(ThemeManager.getBgColor(this));
+        if (headerBar != null) headerBar.setBackgroundColor(ThemeManager.getHeaderColor(this));
     }
 }

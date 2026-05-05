@@ -14,12 +14,14 @@ import com.example.kteb.R;
 import com.example.kteb.model.DatabaseHelper;
 import com.example.kteb.adapter.SessionAdapter;
 import com.example.kteb.model.ReadingSession;
+import com.example.kteb.util.ThemeManager;
 import java.util.List;
 
 public class HistoryFragment extends Fragment implements DatabaseHelper.OnSessionsLoadedListener {
     private RecyclerView recyclerView;
     private SessionAdapter adapter;
     private DatabaseHelper dbHelper;
+    private View rootLayout, headerBar;
 
     @Nullable
     @Override
@@ -33,6 +35,10 @@ public class HistoryFragment extends Fragment implements DatabaseHelper.OnSessio
         
         try {
             dbHelper = DatabaseHelper.getInstance();
+            rootLayout = view.findViewById(R.id.root_layout);
+            headerBar = view.findViewById(R.id.header_bar);
+            applyTheme();
+
             recyclerView = view.findViewById(R.id.history_recycler_view);
             
             if (recyclerView != null) {
@@ -54,5 +60,16 @@ public class HistoryFragment extends Fragment implements DatabaseHelper.OnSessio
         if (adapter != null) {
             adapter.setSessions(sessions);
         }
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        applyTheme();
+    }
+
+    private void applyTheme() {
+        if (rootLayout != null) rootLayout.setBackgroundColor(ThemeManager.getBgColor(requireContext()));
+        if (headerBar != null) headerBar.setBackgroundColor(ThemeManager.getHeaderColor(requireContext()));
     }
 }

@@ -12,12 +12,10 @@ import java.util.List;
 
 public class OpenLibraryAPI {
     private static final String TAG = "OpenLibraryAPI";
-    
     public interface BookSearchListener {
         void onResult(List<BookSearchResult> results);
         void onError(String error);
     }
-    
     public static class BookSearchResult {
         public String key;
         public String title;

@@ -2,6 +2,7 @@ package com.example.kteb;
 
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RatingBar;
@@ -9,26 +10,33 @@ import android.widget.TextView;
 import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.resource.gif.GifDrawable;
 import com.example.kteb.model.Book;
 import com.example.kteb.model.DatabaseHelper;
+import com.example.kteb.util.ThemeManager;
 
 import java.util.List;
 
 public class BookDetailActivity extends AppCompatActivity implements DatabaseHelper.OnBooksLoadedListener {
     private TextView titleText, authorText, categoryText, statusText;
-    private ImageView coverImage;
+    private ImageView coverImage, starGif;
     private RatingBar ratingBar;
     private EditText noteInput;
     private TextView saveButton, deleteButton;
     private DatabaseHelper dbHelper;
     private Book currentBook;
     private String currentBookId;
+    private View rootLayout, headerBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_book_detail);
-        
+
+        rootLayout = findViewById(R.id.root_layout);
+        headerBar = findViewById(R.id.header_bar);
+        applyTheme();
+
         dbHelper = DatabaseHelper.getInstance();
         
         titleText = findViewById(R.id.detail_title);
@@ -36,6 +44,7 @@ public class BookDetailActivity extends AppCompatActivity implements DatabaseHel
         categoryText = findViewById(R.id.detail_category);
         statusText = findViewById(R.id.detail_status);
         coverImage = findViewById(R.id.detail_cover);
+        starGif = findViewById(R.id.star_gif);
         ratingBar = findViewById(R.id.detail_rating);
         noteInput = findViewById(R.id.detail_note);
         saveButton = findViewById(R.id.btn_save_detail);
@@ -118,6 +127,11 @@ public class BookDetailActivity extends AppCompatActivity implements DatabaseHel
                 coverImage.setImageResource(R.drawable.ic_launcher_foreground);
             }
         }
+
+        Glide.with(this)
+                .asGif()
+                .load("file:///android_asset/star.gif")
+                .into(starGif);
     }
 
     private void saveDetails() {
@@ -170,5 +184,16 @@ public class BookDetailActivity extends AppCompatActivity implements DatabaseHel
     @Override
     public void onBooksLoaded(List<Book> books) {
         Log.d("BookDetail", "onBooksLoaded called");
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        applyTheme();
+    }
+
+    private void applyTheme() {
+        if (rootLayout != null) rootLayout.setBackgroundColor(ThemeManager.getBgColor(this));
+        if (headerBar != null) headerBar.setBackgroundColor(ThemeManager.getHeaderColor(this));
     }
 }

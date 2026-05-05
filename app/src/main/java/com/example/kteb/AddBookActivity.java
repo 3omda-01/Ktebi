@@ -15,6 +15,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.kteb.model.Book;
 import com.example.kteb.model.DatabaseHelper;
 import com.example.kteb.model.OpenLibraryAPI;
+import com.example.kteb.util.ThemeManager;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -25,6 +26,7 @@ public class AddBookActivity extends AppCompatActivity {
     private TextView saveButton, cancelButton, searchButton;
     private List<OpenLibraryAPI.BookSearchResult> searchResults;
     private OpenLibraryAPI.BookSearchResult selectedResult;
+    private View rootLayout, headerBar;
 
     private final String[] categories = {"Fiction", "Comics", "Manga", "Self-Improvement", "Educational", "Literature"};
     private final String[] statuses = {"wantToRead", "reading", "completed"};
@@ -33,7 +35,11 @@ public class AddBookActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_book);
-        
+
+        rootLayout = findViewById(R.id.root_layout);
+        headerBar = findViewById(R.id.header_bar);
+        applyTheme();
+
         dbHelper = DatabaseHelper.getInstance();
         
         titleInput = findViewById(R.id.input_title);
@@ -66,7 +72,18 @@ public class AddBookActivity extends AppCompatActivity {
             });
         }
     }
-    
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        applyTheme();
+    }
+
+    private void applyTheme() {
+        if (rootLayout != null) rootLayout.setBackgroundColor(ThemeManager.getBgColor(this));
+        if (headerBar != null) headerBar.setBackgroundColor(ThemeManager.getHeaderColor(this));
+    }
+
     private void searchBooks(String query) {
         Toast.makeText(this, "Searching...", Toast.LENGTH_SHORT).show();
         OpenLibraryAPI.searchByTitle(query, new OpenLibraryAPI.BookSearchListener() {

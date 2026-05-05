@@ -19,6 +19,7 @@ import com.example.kteb.R;
 import com.example.kteb.model.DatabaseHelper;
 import com.example.kteb.adapter.BookAdapter;
 import com.example.kteb.model.Book;
+import com.example.kteb.util.ThemeManager;
 import java.util.List;
 
 public class BookshelfFragment extends Fragment implements BookAdapter.OnBookClickListener, DatabaseHelper.OnBooksLoadedListener {
@@ -32,6 +33,7 @@ public class BookshelfFragment extends Fragment implements BookAdapter.OnBookCli
     private TextView tabAll, tabFiction, tabComics, tabManga, tabSelf, tabEdu, tabLit;
     private TextView fabAdd;
     private TextView bookCountText;
+    private View rootLayout, headerBar;
 
     @Nullable
     @Override
@@ -42,14 +44,18 @@ public class BookshelfFragment extends Fragment implements BookAdapter.OnBookCli
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        
+
         dbHelper = DatabaseHelper.getInstance();
-        
+
+        rootLayout = view.findViewById(R.id.root_layout);
+        headerBar = view.findViewById(R.id.header_bar);
+        applyTheme();
+
         recyclerView = view.findViewById(R.id.books_recycler_view);
         categoryContainer = view.findViewById(R.id.category_tabs);
         fabAdd = view.findViewById(R.id.fab_add_book);
         bookCountText = view.findViewById(R.id.book_count);
-        
+
         tabAll = view.findViewById(R.id.tab_all);
         tabFiction = view.findViewById(R.id.tab_fiction);
         tabComics = view.findViewById(R.id.tab_comics);
@@ -57,17 +63,17 @@ public class BookshelfFragment extends Fragment implements BookAdapter.OnBookCli
         tabSelf = view.findViewById(R.id.tab_self);
         tabEdu = view.findViewById(R.id.tab_edu);
         tabLit = view.findViewById(R.id.tab_lit);
-        
+
         setupRecyclerView();
         setupTabs();
-        
+
         if (fabAdd != null) {
             fabAdd.setOnClickListener(v -> {
                 Intent intent = new Intent(getActivity(), AddBookActivity.class);
                 startActivity(intent);
             });
         }
-        
+
         loadBooks();
     }
 
@@ -81,10 +87,10 @@ public class BookshelfFragment extends Fragment implements BookAdapter.OnBookCli
         View.OnClickListener tabClick = v -> {
             resetTabColors();
             currentCategory = ((TextView)v).getText().toString();
-            v.setBackgroundColor(getResources().getColor(R.color.golden_dark, null));
+            v.setBackgroundColor(ThemeManager.getHeaderColor(requireContext()));
             loadBooks();
         };
-        
+
         tabAll.setOnClickListener(tabClick);
         tabFiction.setOnClickListener(tabClick);
         tabComics.setOnClickListener(tabClick);
@@ -92,12 +98,12 @@ public class BookshelfFragment extends Fragment implements BookAdapter.OnBookCli
         tabSelf.setOnClickListener(tabClick);
         tabEdu.setOnClickListener(tabClick);
         tabLit.setOnClickListener(tabClick);
-        
-        tabAll.setBackgroundColor(getResources().getColor(R.color.golden_dark, null));
+
+        tabAll.setBackgroundColor(ThemeManager.getHeaderColor(requireContext()));
     }
-    
+
     private void resetTabColors() {
-        int gray = getResources().getColor(R.color.c0c0c0, null);
+        int gray = ThemeManager.getBgColor(requireContext());
         tabAll.setBackgroundColor(gray);
         tabFiction.setBackgroundColor(gray);
         tabComics.setBackgroundColor(gray);
@@ -106,7 +112,6 @@ public class BookshelfFragment extends Fragment implements BookAdapter.OnBookCli
         tabEdu.setBackgroundColor(gray);
         tabLit.setBackgroundColor(gray);
     }
-
     private void loadBooks() {
         if (currentCategory.equals("All")) {
             dbHelper.getBooks(this);
@@ -114,7 +119,6 @@ public class BookshelfFragment extends Fragment implements BookAdapter.OnBookCli
             dbHelper.getBooksByCategory(currentCategory, this);
         }
     }
-
     @Override
     public void onBooksLoaded(List<Book> books) {
         if (books != null) {
@@ -133,11 +137,21 @@ public class BookshelfFragment extends Fragment implements BookAdapter.OnBookCli
         }
         adapter.setBooks(books);
     }
-
     @Override
     public void onBookClick(Book book) {
         Intent intent = new Intent(getActivity(), BookDetailActivity.class);
         intent.putExtra("bookId", book.getId());
         startActivity(intent);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        applyTheme();
+    }
+
+    private void applyTheme() {
+        if (rootLayout != null) rootLayout.setBackgroundColor(ThemeManager.getBgColor(requireContext()));
+        if (headerBar != null) headerBar.setBackgroundColor(ThemeManager.getHeaderColor(requireContext()));
     }
 }
